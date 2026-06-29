@@ -1,76 +1,52 @@
-# 📌 ROADMAP - Customer Analytics Data Mart
-
-## 🎯 Project Overview
-
-This project aims to build a **Customer Analytics Data Mart** that transforms raw transactional data into a customer-centric analytical model.
-
-The final output supports:
-- Customer segmentation
-- Revenue analytics
-- Behavioral analysis
-- Customer health monitoring
-- Executive reporting dashboards
+# 🚀 Sprint Breakdown - Customer Analytics Data Mart
 
 ---
 
-## 🧭 Project Structure
-
-The project follows a structured **ETL + Analytics Engineering workflow**.
-
----
-
-# 🚀 Sprint Roadmap
-
----
-
-## 🟦 Sprint 0 - Project Design & Architecture
+## 🟦 Sprint 0 - Project Design (COMPLETED)
 
 ### Objective
-Define the analytical foundation before SQL development.
+Define architecture, business case, data dictionary, and analytical scope.
 
 ### Deliverables
-- Business case definition
+- Business case
 - Architecture design
-- Data flow mapping
-- Sprint roadmap
+- Roadmap
 - Data dictionary
 
-### Files
-- docs/business_case.md
-- docs/architecture.md
-- docs/roadmap.md
-- docs/data_dictionary.md
+### Output
+Foundation for all downstream analytics layers.
+
 ---
 
 ## 🟦 Sprint 1 - Customer Profile Layer
 
 ### Objective
-Build the base customer-level dataset.
-
-### Focus
-- Customer identity
-- Demographics enrichment
-- Basic attributes
+Build the base customer entity and demographic enrichment layer.
 
 ### Outputs
 - customer_key
+- customer_number
 - customer_name
+- birth_date
 - age
 - age_group
 - gender
 - country
 
-### Source Tables
+### Source
 - dim_customers
+
+### Notes
+This is the **identity layer**. No aggregations yet. Only enriched customer attributes.
 
 ---
 
 ## 🟦 Sprint 2 - Revenue KPIs
 
 ### Objective
-Transform transactional data into revenue metrics.
+Build customer-level revenue aggregation layer.
 
-### Key Metrics
+### Outputs
 - lifetime_revenue
 - total_orders
 - total_quantity
@@ -80,102 +56,125 @@ Transform transactional data into revenue metrics.
 - highest_order_value
 - lowest_order_value
 
-### Source Tables
+### Source
 - fact_sales
+
+### Dependency
+Required for:
+- value tier (Sprint 5)
+- health score (Sprint 6)
+- segmentation logic
 
 ---
 
 ## 🟦 Sprint 3 - Behavioral KPIs
 
 ### Objective
-Analyze customer activity patterns.
+Model customer lifecycle and purchase behavior.
 
-### Key Metrics
+### Outputs
 - first_purchase_date
 - last_purchase_date
 - recency_days
 - customer_lifespan_days
 - customer_lifespan_months
+- active_months
 - purchase_frequency
 - purchase_interval_days
-- active_months
 - order_velocity
+
+### Key Design Rules
+- recency_days is the **core driver metric**
+- All segmentation and scoring systems depend on this layer
 
 ---
 
 ## 🟦 Sprint 4 - Product Analytics Layer
 
 ### Objective
-Analyze customer-product interactions.
+Analyze customer-product interaction behavior.
 
-### Key Metrics
+### Outputs
 - favorite_product
 - favorite_category
 - product_diversity
 - category_diversity
 - repeat_purchase_rate
 
-### Source Tables
-- fact_sales
-- dim_products
+### Key Implementation Rule
+favorite_product MUST be computed using:
+
+- aggregation CTE
+- window function ranking
+- top-1 selection per customer
 
 ---
 
 ## 🟦 Sprint 5 - Segmentation Layer
 
 ### Objective
-Build business-driven segmentation.
+Create business-driven customer classification system.
 
 ---
 
-### Customer Status Rules
+### Customer Status (Lifecycle)
 
-| Status | Rule |
-|--------|------|
-| Active | recency_days ≤ 90 |
-| Inactive | 91–180 days |
-| Lost | > 180 days |
+- Active → recency_days ≤ 90
+- Inactive → 91–180 days
+- Lost → > 180 days
 
 ---
 
-### Customer Segment Rules
+### Customer Segment (Business Logic)
 
-| Segment | Rule |
-|--------|------|
-| VIP | Top 20% revenue + recency ≤ 90 |
-| Loyal | total_orders ≥ 10 + recency ≤ 180 |
-| New | lifespan ≤ 90 days |
-| At Risk | 91–180 recency + low frequency |
+Priority-based rules:
+
+1. VIP → lifetime_revenue in top 20% AND recency_days ≤ 90  
+2. At Risk → 91–180 recency_days AND low frequency_score  
+3. Loyal → total_orders ≥ 10 AND recency_days ≤ 180  
+4. New → customer_lifespan_days ≤ 90  
 
 ---
 
 ### Customer Value Tier
 
-- Based on NTILE(5) over lifetime_revenue
+- NTILE(5) over lifetime_revenue
+
+Mapping:
+- 1 → Platinum
+- 2 → Gold
+- 3 → Silver
+- 4 → Bronze
+- 5 → Standard
 
 ---
 
 ## 🟦 Sprint 6 - Health Score Engine
 
 ### Objective
-Build composite customer scoring system.
+Build a composite customer scoring system for analytics & retention.
 
-### Score Components
-- revenue_score
-- frequency_score
-- recency_score
-- engagement_score
-- diversity_score
+---
 
-### Weights
-- Revenue: 30%
-- Frequency: 25%
-- Recency: 20%
-- Engagement: 15%
-- Diversity: 10%
+### Components
 
-### Output
-- health_score (0–100)
+- revenue_score → NTILE over lifetime_revenue
+- frequency_score → NTILE over total_orders
+- recency_score → NTILE over recency_days (ASC)
+- engagement_score → total_orders / active_months
+- diversity_score → product + category diversity
+
+---
+
+### Final Health Score Formula
+
+```sql
+health_score =
+(0.30 * revenue_score +
+ 0.25 * frequency_score +
+ 0.20 * recency_score +
+ 0.15 * engagement_score +
+ 0.10 * diversity_score) * 20
 
 ---
 
@@ -210,23 +209,23 @@ Automate ETL pipeline.
 ### Responsibilities
 - TRUNCATE + INSERT
 - KPI recalculation
-- ETL run tracking
-- Logging
+- ETL logging
+- execution tracking
+- validation hooks
 
 ---
 
 ## 🟦 Sprint 9 - Data Quality Layer
 
 ### Objective
-Ensure data integrity.
+Ensure data integrity and reliability.
 
 ### Checks
-- Null keys
+- Null primary keys
 - Duplicate customers
 - Negative revenue
 - Invalid dates
 - Orphan records
-- Outliers
 
 ---
 
