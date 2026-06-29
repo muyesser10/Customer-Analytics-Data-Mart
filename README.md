@@ -1,2 +1,19 @@
-# Customer-Analytics-Data-Mart
-An end-to-end Customer Analytics Data Mart project built with Advanced SQL.  The project demonstrates customer analytics, KPI engineering, business segmentation, data quality validation, and ETL automation using production-style SQL.
+# Customer Analytics Data Mart
+
+## Overview
+
+Enterprise-style Customer Analytics Data Mart built using Advanced SQL.
+
+The project simulates a production Analytics Engineering workflow from raw sales transactions to a business-ready customer mart.
+
+## Project Goals
+
+• Customer 360
+• Revenue KPIs
+• Behavioral KPIs
+• Product Affinity
+• Segmentation
+• Customer Health Score
+• Data Quality
+• Validation
+• Stored Procedure Automation
