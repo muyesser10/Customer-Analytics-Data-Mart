@@ -75,3 +75,17 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 - Established reusable behavioral layer for segmentation and health scoring
 
 ---
+
+
+## 🟦 Sprint 4 - Product Analytics Layer
+
+### Added
+
+- Built the customer product analytics layer.
+- Implemented favorite product identification using window functions.
+- Implemented favorite category identification.
+- Calculated product diversity for each customer.
+- Calculated category diversity for each customer.
+- Added repeat purchase rate metric.
+
+---
