@@ -117,6 +117,13 @@ Create business-driven customer classification system.
 
 ---
 
+### Scoring Inputs
+
+- revenue_score → NTILE(5) over lifetime_revenue
+- frequency_score → NTILE(5) over total_orders
+
+---
+
 ### Customer Status (Lifecycle)
 
 - Active → recency_days ≤ 90
@@ -130,7 +137,7 @@ Create business-driven customer classification system.
 Priority-based rules:
 
 1. VIP → lifetime_revenue in top 20% AND recency_days ≤ 90  
-2. At Risk → 91–180 recency_days AND low frequency_score  
+2. At Risk → 91–180 recency_days AND frequency_score ≤ 2
 3. Loyal → total_orders ≥ 10 AND recency_days ≤ 180  
 4. New → customer_lifespan_days ≤ 90  
 
@@ -158,11 +165,16 @@ Build a composite customer scoring system for analytics & retention.
 
 ### Components
 
-- revenue_score → NTILE over lifetime_revenue
-- frequency_score → NTILE over total_orders
+Uses ranking metrics generated in Sprint 5 together with additional behavioral scoring.
+
 - recency_score → NTILE over recency_days (ASC)
 - engagement_score → total_orders / active_months
 - diversity_score → product + category diversity
+
+Inputs from Sprint 5:
+
+- revenue_score
+- frequency_score
 
 ---
 
