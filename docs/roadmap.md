@@ -195,6 +195,24 @@ Combine all layers into final dataset.
 - Segmentation
 - Health Score
 - Flags
+- Advanced Product Analytics
+
+### Additional Analytical Metrics
+
+The final Customer Data Mart enriches the analytical model with advanced
+customer-product interaction metrics that are not required by downstream
+layers but provide additional business value.
+
+Included metrics:
+
+- favorite_product_quantity
+- favorite_category_share
+- avg_products_per_order
+- avg_categories_per_order
+- single_category_customer
+- cross_category_customer
+- first_product_purchased
+- last_product_purchased
 
 ---
 

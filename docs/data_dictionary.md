@@ -1,5 +1,31 @@
 # Data Dictionary - Customer Analytics Data Mart
 
+Customer Data Mart
+
+│
+
+├── Identity
+
+├── Demographics
+
+├── Revenue KPIs
+
+├── Behavioral KPIs
+
+├── Product Analytics
+
+│      ├── Core KPIs
+
+│      └── Advanced KPIs
+
+├── Segmentation
+
+├── Health Score
+
+├── Flags
+
+└── Metadata
+
 ## Purpose
 
 This document defines all columns in the Customer Analytics Data Mart.  
@@ -67,7 +93,9 @@ Each record represents the current state of a customer.
 
 ---
 
-# Product KPIs
+# Product Analytics
+
+## Core Product KPIs
 
 | Column | Data Type | Description | KPI / Calculation Logic | Source |
 |--------|----------|-------------|--------------------------|--------|
@@ -76,6 +104,21 @@ Each record represents the current state of a customer.
 | product_diversity | INT64 | Number of unique products | COUNT(DISTINCT product_key) | fact_sales |
 | category_diversity | INT64 | Number of categories purchased | COUNT(DISTINCT category) | dim_products |
 | repeat_purchase_rate | FLOAT64 | Repeat purchase ratio | repeat_orders / total_orders | Calculated |
+
+
+## Advanced Product Analytics
+
+| Column | Data Type | Description | KPI / Calculation Logic | Source |
+|--------|----------|-------------|--------------------------|--------|
+| favorite_product_quantity | INT64 | Total quantity purchased for the favorite product | SUM(quantity) for favorite_product | Calculated |
+| favorite_product_share | FLOAT64 | Share of purchases from favorite product | favorite_product_quantity / total_quantity | Calculated |
+| favorite_category_share | FLOAT64 | Share of purchases from favorite category | favorite_category_quantity / total_quantity | Calculated |
+| avg_products_per_order | FLOAT64 | Average number of products purchased per order | AVG(distinct_products_per_order) | Calculated |
+| avg_categories_per_order | FLOAT64 | Average number of distinct categories per order | AVG(distinct_categories_per_order) | Calculated |
+| single_category_customer | BOOLEAN | Customer purchases from only one category | category_diversity = 1 for all purchases | Calculated |
+| cross_category_customer | BOOLEAN | Customer purchases from multiple categories | category_diversity > 1 across purchase history | Calculated |
+| first_product_purchased | STRING | First purchased product | Product purchased in customer's earliest completed order. | Calculated |
+| last_product_purchased | STRING | Most recently purchased product |Product purchased in customer's most recent completed order. | Calculated |
 
 ---
 
