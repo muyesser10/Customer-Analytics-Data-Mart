@@ -89,3 +89,15 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 - Added repeat purchase rate metric.
 
 ---
+
+## 🟦 Sprint 5 - Customer Segmentation Layer
+
+### Added
+
+- Customer segmentation layer (`customer_segmentation`)
+- Revenue ranking using `NTILE(5)`
+- Frequency ranking using `NTILE(5)`
+- Customer lifecycle status classification
+- Business-driven customer segments
+- Customer value tier classification
+
