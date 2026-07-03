@@ -88,6 +88,7 @@ SELECT
   cl.customer_lifespan_months,
   cl.recency_days,
   ca.active_months,
+  rm.total_orders,
   SAFE_DIVIDE(rm.total_orders,ca.active_months) AS purchase_frequency,
   SAFE_DIVIDE(cl.customer_lifespan_days,NULLIF(rm.total_orders-1,0)) AS purchase_interval_days,
   SAFE_DIVIDE(rm.total_orders,NULLIF(cl.customer_lifespan_months/12,0)) AS order_velocity
