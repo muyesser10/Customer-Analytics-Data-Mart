@@ -31,7 +31,7 @@ health scoring, and recommendation use cases.
 */
 
 
-CREATE OR REPLACE VIEW `analytics.customer_behavior_metrics` AS 
+CREATE OR REPLACE VIEW `analytics.customer_product_metrics` AS 
 
 WITH base_sales AS(
   SELECT 
