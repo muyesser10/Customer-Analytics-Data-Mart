@@ -144,3 +144,31 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 
 ---
 
+
+## 🟦 Sprint 7 - Customer Data Mart Layer
+
+### Added
+
+- Created `customer_data_mart` analytical view
+- Integrated all analytical layers into a single customer-centric dataset
+- Consolidated customer identity and demographic attributes
+- Integrated revenue KPIs
+- Integrated behavioral KPIs
+- Integrated core product analytics metrics
+- Integrated advanced product analytics metrics
+- Integrated customer segmentation and value tier attributes
+- Integrated customer health score metrics
+- Added business flags
+  - is_active_customer
+  - is_vip
+  - is_high_value
+  - is_at_risk
+  - is_churned
+- Added metadata columns
+  - data_refresh_date
+  - etl_run_id
+  - record_created_at
+- Calculated `revenue_per_month` using revenue and behavioral metrics
+- Reused validated analytical views without duplicating business logic
+- Established the final presentation layer for dashboards, reporting, and downstream analytics
+
