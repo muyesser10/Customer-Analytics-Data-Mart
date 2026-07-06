@@ -77,16 +77,34 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 ---
 
 
-## 🟦 Sprint 4 - Product Analytics Layer
+## 🟦 Sprint 4 - Customer Product Metrics Layer
 
 ### Added
 
-- Built the customer product analytics layer.
-- Implemented favorite product identification using window functions.
-- Implemented favorite category identification.
-- Calculated product diversity for each customer.
-- Calculated category diversity for each customer.
-- Added repeat purchase rate metric.
+- Created `customer_product_metrics` analytical view
+
+- Implemented core product analytics
+  - favorite_product
+  - favorite_category
+  - product_diversity
+  - category_diversity
+  - repeat_purchase_rate
+
+- Added advanced product analytics
+  - favorite_product_quantity
+  - favorite_product_share
+  - favorite_category_share
+  - avg_products_per_order
+  - avg_categories_per_order
+  - single_category_customer
+  - cross_category_customer
+  - first_product_purchased
+  - last_product_purchased
+
+- Used window functions to identify favorite products and categories
+- Built reusable aggregation layers to avoid duplicated calculations
+- Established reusable product analytics layer for health scoring and the Customer Data Mart
+
 
 ---
 
@@ -100,4 +118,29 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 - Customer lifecycle status classification
 - Business-driven customer segments
 - Customer value tier classification
+
+
+## 🟦 Sprint 6 - Customer Health Score Layer
+
+### Added
+
+- Created `customer_health_score` analytical view
+- Implemented customer health scoring framework
+- Calculated standardized scoring metrics
+  - revenue_score
+  - frequency_score
+  - recency_score
+  - engagement_score
+  - diversity_score
+- Built engagement metric using orders per active month
+- Built diversity metric using combined product and category diversity
+- Standardized customer metrics using `NTILE(5)` ranking
+- Applied a consistent scoring convention
+  - 1 = Best
+  - 5 = Worst
+- Inverted ranking scores during health score calculation to produce positive weighted contributions
+- Calculated weighted composite `health_score` using revenue, frequency, recency, engagement, and diversity scores
+- Established reusable customer health scoring layer for the Customer Data Mart
+
+---
 
