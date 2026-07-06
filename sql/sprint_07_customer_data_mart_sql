@@ -1,0 +1,154 @@
+/*
+===============================================================================
+Sprint 7 - Customer Data Mart Layer
+===============================================================================
+
+Purpose
+-------
+Build the final Customer Analytics Data Mart by integrating all analytical
+layers into a single customer-centric dataset.
+
+Grain
+-----
+One row per customer.
+
+Sources
+-------
+analytics.customer_profile
+analytics.customer_revenue_metrics
+analytics.customer_behavior_metrics
+analytics.customer_product_metrics
+analytics.customer_segmentation
+analytics.customer_health_score
+
+Output
+------
+analytics.customer_data_mart
+
+Notes
+-----
+This is the final presentation layer of the analytics pipeline.
+
+The data mart consolidates customer identity, demographics, revenue,
+behavioral metrics, product analytics, segmentation, health scoring,
+business flags, and metadata into a single analytical dataset.
+
+No business calculations are duplicated in this layer. All KPIs are
+consumed from previously validated analytical views to ensure consistency,
+reusability, and maintainability across the project.
+
+This view is designed to serve as the primary analytical dataset for
+dashboards, reporting, customer analytics, downstream data products,
+and ETL automation.
+
+===============================================================================
+*/
+
+CREATE OR REPLACE VIEW `analytics.customer_data_mart` AS
+
+SELECT
+
+  -- Identity
+  cp.customer_key,
+  cp.customer_number,
+  cp.customer_name,
+
+  -- Demographics
+  cp.birth_date,
+  cp.age,
+  cp.age_group,
+  cp.gender,
+  cp.country,
+
+  -- Revenue KPIs
+  rm.lifetime_revenue,
+  rm.total_orders,
+  rm.total_quantity,
+  rm.distinct_products,
+  rm.average_order_value,
+
+  SAFE_DIVIDE(
+    rm.lifetime_revenue,
+    NULLIF(bm.active_months,0)) AS revenue_per_month,
+  
+  rm.highest_order_value,
+  rm.lowest_order_value,
+
+  -- Behavioral KPIs
+  bm.first_purchase_date,
+  bm.last_purchase_date,
+  bm.customer_lifespan_days,
+  bm.customer_lifespan_months,
+  bm.recency_days,
+  bm.purchase_frequency,
+  bm.purchase_interval_days,
+  bm.active_months,
+  bm.order_velocity,
+
+  -- Product Analytics - Core KPIs
+  pm.favorite_product,
+  pm.favorite_category,
+  pm.product_diversity,
+  pm.category_diversity,
+  pm.repeat_purchase_rate,
+
+  -- Product Analytics - Advanced KPIs
+  pm.favorite_product_quantity,
+  pm.favorite_product_share,
+  pm.favorite_category_share,
+  pm.avg_products_per_order,
+  pm.avg_categories_per_order,
+  pm.single_category_customer,
+  pm.cross_category_customer,
+  pm.first_product_purchased,
+  pm.last_product_purchased,
+
+  -- Customer Segmentation
+  cs.customer_status,
+  cs.customer_segment,
+  cs.customer_value_tier,
+
+  -- Health Score
+  hs.revenue_score,
+  hs.frequency_score,
+  hs.recency_score,
+  hs.engagement_score,
+  hs.diversity_score, 
+  hs.health_score,
+
+  -- Business Flags
+  bm.recency_days <=90 AS is_active_customer,
+
+  cs.customer_segment= 'VIP' AS is_vip,
+
+  cs.customer_value_tier= 'Platinum'AS is_high_value,
+
+  cs.customer_segment= 'At Risk' AS is_at_risk,
+
+  bm.recency_days>180 AS  is_churned,
+
+  -- Metadata
+  CURRENT_TIMESTAMP() AS data_refresh_date,
+
+   -- Temporary ETL run identifier.
+   -- Will be replaced by Stored Procedure in Sprint 8.
+  GENERATE_UUID() AS etl_run_id,
+
+  CURRENT_TIMESTAMP() AS record_created_at
+
+FROM `analytics.customer_profile` cp 
+
+LEFT JOIN `analytics.customer_revenue_metrics` rm 
+USING(customer_key)
+
+LEFT JOIN `analytics.customer_behavior_metrics` bm
+USING(customer_key)
+
+LEFT JOIN `analytics.customer_product_metrics` pm
+USING(customer_key)
+
+LEFT JOIN `analytics.customer_segmentation` cs 
+USING(customer_key)
+
+LEFT JOIN `analytics.customer_health_score` hs
+USING(customer_key)
