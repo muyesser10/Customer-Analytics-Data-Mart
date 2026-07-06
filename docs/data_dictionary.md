@@ -190,12 +190,11 @@ health_score =
 
 | Column | Data Type | Description | KPI / Calculation Logic | Source |
 |--------|----------|-------------|--------------------------|--------|
-| is_active_customer | BOOLEAN | Active customer flag | recency_days ≤ 90 | Calculated |
-| is_vip | BOOLEAN | VIP customer | Platinum AND recency_days ≤ 90 | Calculated |
-| is_high_value | BOOLEAN | Top customers | Top 20% revenue | Calculated |
-| is_at_risk | BOOLEAN | Churn risk | recency_days 91–180 AND frequency_score ≤ 2 | Calculated |
-| is_churned | BOOLEAN | Lost customer | recency_days > 180 | Calculated |
-
+| is_active_customer | BOOLEAN | Active customer flag | `recency_days <= 90` | Calculated |
+| is_vip | BOOLEAN | VIP customer flag | `customer_segment = 'VIP'` | customer_segmentation |
+| is_high_value | BOOLEAN | High-value customer flag | `customer_value_tier = 'Platinum'` | customer_segmentation |
+| is_at_risk | BOOLEAN | At-risk customer flag | `customer_segment = 'At Risk'` | customer_segmentation |
+| is_churned | BOOLEAN | Churned customer flag | `recency_days > 180` | Calculated |
 ---
 
 # Metadata
