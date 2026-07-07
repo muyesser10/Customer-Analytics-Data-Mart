@@ -23,7 +23,7 @@ analytics.customer_health_score
 
 Output
 ------
-analytics.customer_data_mart
+analytics.v_customer_data_mart
 
 Notes
 -----
@@ -44,7 +44,7 @@ and ETL automation.
 ===============================================================================
 */
 
-CREATE OR REPLACE VIEW `analytics.customer_data_mart` AS
+CREATE OR REPLACE VIEW `analytics.v_customer_data_mart` AS
 
 SELECT
 
