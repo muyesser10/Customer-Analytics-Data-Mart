@@ -172,3 +172,19 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 - Reused validated analytical views without duplicating business logic
 - Established the final presentation layer for dashboards, reporting, and downstream analytics
 
+
+## 🟦 Sprint 8 - Customer Data Mart ETL Automation
+
+### Added
+
+- Created `sp_build_customer_datamart` stored procedure
+- Created physical `customer_data_mart` table
+- Created `etl_execution_log` table for ETL monitoring
+- Implemented full refresh workflow using `TRUNCATE` + `INSERT`
+- Generated unique ETL run identifiers with `GENERATE_UUID()`
+- Captured ETL execution start and end timestamps
+- Logged execution duration, row count, and execution status
+- Implemented exception handling with error logging and rethrow (`RAISE`)
+- Separated ETL orchestration from business logic by consuming `v_customer_data_mart`
+- Established reusable ETL automation layer for downstream scheduling and orchestration
+
