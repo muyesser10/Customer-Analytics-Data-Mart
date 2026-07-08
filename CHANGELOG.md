@@ -188,3 +188,25 @@ The project follows an incremental **ETL + Analytics Engineering sprint-based ap
 - Separated ETL orchestration from business logic by consuming `v_customer_data_mart`
 - Established reusable ETL automation layer for downstream scheduling and orchestration
 
+
+## [Sprint 9] - Data Quality Layer
+
+### Added
+
+* Implemented a dedicated Data Quality Layer for the Customer Analytics Data Mart.
+* Created the `analytics.data_quality_results` audit table to store validation outcomes.
+* Added automated data quality checks for:
+
+  * Null primary keys
+  * Duplicate customers
+  * Negative revenue
+  * Invalid purchase dates
+  * Orphan customer records
+* Introduced `run_id` to uniquely identify each data quality execution.
+* Added `severity` levels (`CRITICAL`, `WARNING`) for prioritizing validation issues.
+* Implemented a shared execution timestamp across all validation results within a single run.
+* Added summary queries for monitoring validation status and failed record counts.
+* Included environment notes documenting BigQuery Sandbox DDL/DML limitations.
+
+
+
