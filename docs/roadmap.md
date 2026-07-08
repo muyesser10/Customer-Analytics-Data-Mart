@@ -248,14 +248,33 @@ Automate ETL pipeline.
 ## 🟦 Sprint 9 - Data Quality Layer
 
 ### Objective
-Ensure data integrity and reliability.
 
-### Checks
+Ensure data integrity and reliability before downstream reporting and analytics.
+
+### Output
+
+- data_quality_results
+
+### Automated Checks
+
 - Null primary keys
 - Duplicate customers
 - Negative revenue
 - Invalid dates
 - Orphan records
+
+### Monitoring Metadata
+
+- ETL run identifier (run_id)
+- Severity level (CRITICAL / WARNING)
+- Execution timestamp
+- PASS / FAIL status
+- Failed record count
+
+### Notes
+
+The Data Quality layer is independent of the business logic and stores
+quality check results for operational monitoring and audit purposes.
 
 ---
 
