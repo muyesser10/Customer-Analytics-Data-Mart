@@ -197,6 +197,23 @@ health_score =
 | is_churned | BOOLEAN | Churned customer flag | `recency_days > 180` | Calculated |
 ---
 
+# Data Quality Results
+
+| Column          | Data Type | Description                                     | Source               |
+| --------------- | --------- | ----------------------------------------------- | -------------------- |
+| run_id          | STRING    | Unique identifier of the Data Quality execution | Generated            |
+| check_name      | STRING    | Name of the quality rule                        | Validation Framework |
+| check_category  | STRING    | Validation category                             | Validation Framework |
+| severity        | STRING    | Severity level (CRITICAL / WARNING)             | Validation Framework |
+| failed_records  | INT64     | Number of failed records                        | Calculated           |
+| status          | STRING    | PASS or FAIL                                    | Calculated           |
+| check_timestamp | TIMESTAMP | Execution timestamp                             | ETL                  |
+
+
+## Purpose
+
+Stores the execution results of automated data quality validations performed after each Customer Data Mart ETL execution. The table supports operational monitoring, auditing, troubleshooting, and historical quality tracking.
+
 # Metadata
 
 | Column | Data Type | Description | KPI / Calculation Logic | Source |
