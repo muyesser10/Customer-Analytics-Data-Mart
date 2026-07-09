@@ -231,17 +231,21 @@ Included metrics:
 ## 🟦 Sprint 8 - Stored Procedure Automation
 
 ### Objective
-Automate ETL pipeline.
+
+Automate the end-to-end Customer Analytics Data Mart pipeline.
 
 ### Procedure
+
 - sp_build_customer_datamart
 
 ### Responsibilities
+
 - TRUNCATE + INSERT
 - KPI recalculation
 - ETL logging
 - execution tracking
-- validation hooks
+- Data Quality execution
+- Validation execution
 
 ---
 
@@ -273,22 +277,42 @@ Ensure data integrity and reliability before downstream reporting and analytics.
 
 ### Notes
 
-The Data Quality layer is independent of the business logic and stores
-quality check results for operational monitoring and audit purposes.
+The Data Quality layer validates structural integrity and business rules before analytical consumption. Validation results are stored independently for operational monitoring, auditing, and troubleshooting.
 
 ---
 
 ## 🟦 Sprint 10 - Validation Layer
 
 ### Objective
-Ensure consistency with source.
 
-### Validations
+Validate that the Customer Analytics Data Mart is fully reconciled with source tables after ETL execution to ensure production-ready analytical consistency.
+
+### Output
+
+- validation_results
+
+### Validation Rules
+
 - Revenue reconciliation
-- Order count matching
+- Order count validation
 - Customer count validation
-- Sampling checks
-- Aggregation checks
+- Quantity aggregation validation
+- Customer sampling validation
+
+### Validation Metadata
+
+- Validation run identifier (run_id)
+- Validation timestamp
+- Source value
+- Target value
+- Difference
+- PASS / FAIL status
+
+### Notes
+
+The Validation layer performs post-ETL reconciliation between source tables and the Customer Data Mart.
+
+Unlike the Data Quality layer, no business rules or data cleansing checks are performed. Validation focuses exclusively on verifying that ETL aggregations have been loaded correctly.
 
 ---
 
@@ -296,3 +320,22 @@ Ensure consistency with source.
 
 ```sql
 CALL sp_build_customer_datamart();
+```
+
+Execution Flow
+
+Customer Data Mart Build
+
+↓
+
+Data Quality Checks
+
+↓
+
+Validation Layer
+
+↓
+
+Analytics Ready
+
+---
