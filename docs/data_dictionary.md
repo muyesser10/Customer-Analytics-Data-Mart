@@ -214,12 +214,49 @@ health_score =
 
 Stores the execution results of automated data quality validations performed after each Customer Data Mart ETL execution. The table supports operational monitoring, auditing, troubleshooting, and historical quality tracking.
 
+
+---
+
+# Validation Results
+
+| Column | Data Type | Description | Source |
+|----------|----------|-------------|--------|
+| run_id | STRING | Unique identifier of the validation execution | Generated |
+| validation_name | STRING | Name of the reconciliation rule | Validation Framework |
+| validation_category | STRING | Validation category | Validation Framework |
+| source_value | NUMERIC | Aggregated value calculated from source tables | Calculated |
+| target_value | NUMERIC | Aggregated value calculated from Customer Data Mart | Calculated |
+| difference | NUMERIC | Difference between source and target values | Calculated |
+| status | STRING | PASS or FAIL | Calculated |
+| validation_timestamp | TIMESTAMP | Validation execution timestamp | ETL |
+
+## Purpose
+
+Stores reconciliation results generated after each Customer Data Mart build.
+
+The Validation layer verifies that ETL outputs are fully consistent with source data before downstream reporting and analytical consumption.
+
+Unlike the Data Quality layer, this framework does not validate business rules or data integrity. Its purpose is to reconcile source tables with the analytical data mart and provide production-level confidence in ETL execution.
+
+---
+
 # Metadata
 
 | Column | Data Type | Description | KPI / Calculation Logic | Source |
 |--------|----------|-------------|--------------------------|--------|
-| data_refresh_date | TIMESTAMP | ETL timestamp | CURRENT_TIMESTAMP() | ETL |
-| etl_run_id | STRING | ETL run identifier | UUID | ETL |
-| record_created_at | TIMESTAMP | Record timestamp | CURRENT_TIMESTAMP() | ETL |
+| data_refresh_date | TIMESTAMP | Customer Data Mart refresh timestamp | CURRENT_TIMESTAMP() | ETL |
+| etl_run_id | STRING | Unique identifier of the ETL execution that generated the Customer Data Mart snapshot | UUID | ETL |
+| record_created_at | TIMESTAMP | Record creation timestamp | CURRENT_TIMESTAMP() | ETL |
 
+---
+
+## Operational Monitoring
+
+The Customer Analytics Data Mart is supported by two operational monitoring layers:
+
+- **Data Quality Layer** (`data_quality_results`)
+  - Validates structural integrity and business rules.
+
+- **Validation Layer** (`validation_results`)
+  - Performs reconciliation between source tables and the Customer Data Mart after ETL execution.
 ---
