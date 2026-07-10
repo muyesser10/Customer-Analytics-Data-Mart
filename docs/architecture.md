@@ -1,8 +1,13 @@
 # Architecture - Customer Analytics Data Mart
 
-# Customer Analytics Data Mart Architecture
-
 ```mermaid
+%%{init: {
+  "theme": "default",
+  "themeVariables": {
+    "fontSize": "22px"
+  }
+}}%%
+
 flowchart LR
 
 %% =============================================================================
@@ -24,23 +29,18 @@ end
 
 subgraph ANALYTICS["Analytics Transformation Layer"]
 
-S1["Sprint 1
-Customer Profile"]
+S1["Sprint 1<br/>Customer Profile"]
 
-S2["Sprint 2
-Revenue KPIs"]
+S2["Sprint 2<br/>Revenue KPIs"]
 
-S3["Sprint 3
-Behavioral KPIs"]
+S3["Sprint 3<br/>Behavioral KPIs"]
 
-S4["Sprint 4
-Product Analytics"]
+S4["Sprint 4<br/>Product Analytics"]
 
-S5["Sprint 5
-Customer Segmentation"]
+S5["Sprint 5<br/>Customer 
+Segmentation"]
 
-S6["Sprint 6
-Health Score Engine"]
+S6["Sprint 6<br/>Health Score "]
 
 end
 
@@ -62,20 +62,12 @@ end
 
 subgraph OPS["Operational Layer"]
 
-SP["Sprint 8
-Stored Procedure
+SP["Sprint 8<br/>Stored Procedure<br/><br/>sp_build_customer_
+datamart()"]
 
-sp_build_customer_datamart()"]
+DQ["Sprint 9<br/>Data Quality<br/><br/>data_quality_results"]
 
-DQ["Sprint 9
-Data Quality
-
-data_quality_results"]
-
-VAL["Sprint 10
-Validation Layer
-
-validation_results"]
+VAL["Sprint 10<br/>Validation Layer<br/><br/>validation_results"]
 
 end
 
